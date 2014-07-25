@@ -28,8 +28,10 @@ public class LoginActivity extends Activity {
         Parse.initialize(this, "CUSvRfGOkKbtqRCUvyeWJueCosdm8J27OZh92blz", "UV0Upul7lieWhd1fgvVZAoFeEMCVVO3LlTlKHd8h");
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            Intent i = new Intent(getApplicationContext(), ListUsersActivity.class);
-            startActivity(i);
+            Intent serviceIntent = new Intent(getApplicationContext(),ListUsersActivity.class);
+            startService(serviceIntent);
+            Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
+            startActivity(intent);
         }
 
         setContentView(R.layout.activity_login);
@@ -50,8 +52,10 @@ public class LoginActivity extends Activity {
                     @Override
                     public void done(com.parse.ParseException e) {
                         if (e == null){
-                            Intent i = new Intent(getApplicationContext(), ListUsersActivity.class);
-                            startActivity(i);
+                            Intent serviceIntent = new Intent(getApplicationContext(),ListUsersActivity.class);
+                            startService(serviceIntent);
+                            Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
+                            startActivity(intent);
                         }else {
                             Toast.makeText(getApplicationContext(), R.string.signup_error, Toast.LENGTH_SHORT ).show();
                         }
@@ -70,8 +74,10 @@ public class LoginActivity extends Activity {
                     @Override
                     public void done(ParseUser parseUser, com.parse.ParseException e) {
                         if (parseUser != null){
-                            Intent i = new Intent(getApplicationContext(), ListUsersActivity.class);
-                            startActivity(i);
+                            Intent serviceIntent = new Intent(getApplicationContext(),ListUsersActivity.class);
+                            startService(serviceIntent);
+                            Intent intent = new Intent(getApplicationContext(), ListUsersActivity.class);
+                            startActivity(intent);
                         }else{
                             Toast.makeText(getApplicationContext(),R.string.login_error_password, Toast.LENGTH_SHORT).show();
                         }
@@ -79,12 +85,12 @@ public class LoginActivity extends Activity {
                 });
             }
         });
+    }
 
-
-
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(getApplicationContext(), MessageService.class));
     }
 
 }

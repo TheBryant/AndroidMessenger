@@ -41,6 +41,7 @@ public class ListUsersActivity extends Activity {
         });
 
         setConversationsList();
+
     }
     private void setConversationsList(){
         currentUserId = ParseUser.getCurrentUser().getObjectId();
@@ -61,18 +62,31 @@ public class ListUsersActivity extends Activity {
                     usersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Toast.makeText(getApplicationContext(),"CLICKED USER",Toast.LENGTH_SHORT).show();
+                            openConversation(names, position);
                         }
                     });
-
                 }else{
                     Toast.makeText(getApplication(), "Error loading User List", Toast.LENGTH_LONG);
                 }
             }
         });
-
-
-
+    }
+    public void openConversation(ArrayList<String> names, int position){
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("username", names.get(position));
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> user, ParseException e) {
+                if (e == null) {
+                    Intent i = new Intent(getApplicationContext(), MessagingActivity.class);
+                    i.putExtra(MessagingActivity.RECIPIENT_ID, user.get(0).getObjectId());
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Error finding that user",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
