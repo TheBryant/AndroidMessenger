@@ -51,10 +51,8 @@ public class MessageService extends Service implements SinchClientListener {
                 .build();
 
         sinchClient.addSinchClientListener(this);
-
         sinchClient.setSupportMessaging(true);
         sinchClient.setSupportActiveConnectionInBackground(true);
-
         sinchClient.checkManifest();
         sinchClient.start();
     }

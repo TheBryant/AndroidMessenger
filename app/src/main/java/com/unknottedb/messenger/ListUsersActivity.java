@@ -3,6 +3,7 @@ package com.unknottedb.messenger;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListUsersActivity extends Activity {
+    private static final String TAG = "ListUsersActivity";
     private Button logoutButton;
     private ListView usersListView;
     private String currentUserId;
@@ -41,7 +43,7 @@ public class ListUsersActivity extends Activity {
         });
 
         setConversationsList();
-
+        Log.d(TAG, "LIST USERS ACTIVITY STARTED");
     }
     private void setConversationsList(){
         currentUserId = ParseUser.getCurrentUser().getObjectId();

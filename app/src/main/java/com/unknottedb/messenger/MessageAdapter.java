@@ -26,7 +26,6 @@ public class MessageAdapter extends BaseAdapter {
         messages = new ArrayList<Pair<Message, Integer>>();
     }
 
-
     public void addMessage(Message message, int direction) {
         messages.add(new Pair(message, direction));
         notifyDataSetChanged();

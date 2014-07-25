@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class MessagingActivity extends Activity implements ServiceConnection, MessageClientListener {
     public static final String RECIPIENT_ID = "com.unknotted.messenger.recipient_id";
+    private static final String TAG = "MessagingActivity";
     private String recipientId;
     private Button sendButton;
     private EditText messageBodyField;
@@ -39,6 +41,7 @@ public class MessagingActivity extends Activity implements ServiceConnection, Me
         Intent i = getIntent();
         recipientId = i.getStringExtra(RECIPIENT_ID);
         messageBodyField = (EditText)findViewById(R.id.messageBodyField);
+
         sendButton = (Button)findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +49,7 @@ public class MessagingActivity extends Activity implements ServiceConnection, Me
                 sendMessage();
             }
         });
+
         messageAdapter = new MessageAdapter(this);
         messagesList = (ListView)findViewById(R.id.listMessages);
         messagesList.setAdapter(messageAdapter);
@@ -56,26 +60,32 @@ public class MessagingActivity extends Activity implements ServiceConnection, Me
         super.onDestroy();
     }
 
-    private void sendMessage(){
-        String message = messageBodyField.getText().toString();
-        if (message.isEmpty()){
-            Toast.makeText(this, "Enter a message!", Toast.LENGTH_SHORT).show();
-        }else {
-            messageService.sendMessage(recipientId, message);
-        }
-    }
+
 
     private void doBind(){
+        Log.d(TAG, "IN DOBIND");
         Intent serviceIntent = new Intent(this, MessageService.class);
+        startService(serviceIntent);
         bindService(serviceIntent, this, BIND_AUTO_CREATE);
     }
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
+        Log.d(TAG, "IN onServiceConnected");
         messageService = (MessageService.MessageServiceInterface)service;
         messageService.addMessageClientListener(this);
         if (!messageService.isSinchClientStarted()) {
             Toast.makeText(this, "The message client didn't start!",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void sendMessage(){
+        String message = messageBodyField.getText().toString();
+        Log.d(TAG, "MESS:");
+        if (message.isEmpty()){
+            Toast.makeText(this, "Enter a message!", Toast.LENGTH_SHORT).show();
+        }else {
+            messageService.sendMessage(recipientId, message);
         }
     }
 
