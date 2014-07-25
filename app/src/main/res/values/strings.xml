@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MessagingTutorial</string>
+    <string name="login_activity_label">Sinch Messaging Tutorial</string>
+    <string name="username">USERNAME</string>
+    <string name="password">PASSWORD</string>
+    <string name="message_elipses">Message...</string>
+    <string name="logout">Logout</string>
+    <string name="action_settings">Action Settings</string>
+
+    <string name="signup_error">There was an error with registration</string>
+    <string name="login_error_password">Wrong User/Password combination</string>
+
+</resources>
